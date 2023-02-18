@@ -19,13 +19,11 @@ $asb_title_secondary_services = $asb_settings['asb_title_secondary_services']; /
     <?php
 
     $args = array(
-        'post_type' => 'service',
-        'post_status' => 'publish',
+        'post_type'      => 'incident',
+        'post_status'    => 'publish',
         'posts_per_page' => $asb_other_services_count,
-        'meta_key' => 'asb_position',
-        'orderby' => 'meta_value',
-        'order' => 'ASC',
-        'cat' => '7'
+        'meta_key'       => 'date',
+        'orderby'        => array( 'meta_value' => 'ASC' ),
     );
 
     $loop = new WP_Query( $args );
@@ -35,9 +33,13 @@ $asb_title_secondary_services = $asb_settings['asb_title_secondary_services']; /
         <div class="otherServices_row gs_reveal">
             <div class="service">
                 <header class="service_header">
-                    <?php $icon_id = get_field('asb_icon'); ?>
-                    <?php $icon_dir = get_attached_file( $icon_id ); ?>
-                    <div class="service_iconWrap"><?php echo file_get_contents( $icon_dir );?></div>
+
+				<?php
+				$date = get_field( 'date' );
+				if ( !empty( $date ) ) {
+					echo '<p>' . $date . '</p>';
+				}
+				?>
 
                     <?php
                     $title = the_title( '', '', false );
@@ -52,7 +54,7 @@ $asb_title_secondary_services = $asb_settings['asb_title_secondary_services']; /
                     <?php
                     $trim = '50';
                     $read_more = '...<a class="readMore" href="/services/#' . $url . '"><i> read more </i><i class="fas fa-angle-double-right"></i></a>';
-                    echo force_balance_tags( html_entity_decode( wp_trim_words( htmlentities( wpautop(get_the_content()) ), $trim, $read_more ) ) );
+                    echo force_balance_tags( html_entity_decode( wp_trim_words( htmlentities( get_field( 'what_happened' ) ), $trim, $read_more ) ) );
                     ?>
 
                 </pre>
@@ -60,14 +62,16 @@ $asb_title_secondary_services = $asb_settings['asb_title_secondary_services']; /
                 <footer class="service_footer">
 
                     <?php
-                    // ACF Number
-                    $price = get_field( 'asb_price' );
+                    // ACF fields
+                    $started = get_field( 'time_started' );
+					$stopped = get_field( 'time_stopped' );
 
-                    // ACF True/False
-                    if ( get_field('show_homepage_price') && !empty( $price ) ) {
-                        echo '<span class="service_price">' . '£' . get_field( 'asb_price' ) . '</span>';
-                    } else {
-                        echo '<span class="service_price-empty"><a class="readMore" href="/services/#breed-pricelist">See Breed Pricelist</a></span>';
+                    if ( !empty( $started ) ) {
+                        echo '<span class="service_price">Time started:' . $started . '</span>';
+                    }
+					
+					if ( !empty( $stopped ) ) {
+                        echo '<span class="service_price">Time stopped:' . $stopped . '</span>';
                     }
                     ?>
 
@@ -84,6 +88,5 @@ $asb_title_secondary_services = $asb_settings['asb_title_secondary_services']; /
 
     <?php endwhile; ?>
     <?php wp_reset_postdata(); ?>
-
 
 </div>

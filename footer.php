@@ -11,7 +11,6 @@ $asb_phone_number = $asb_settings['asb_phone_number']; // Phone Number
 $asb_phone_href = preg_replace('/\s+/', '', $asb_phone_number); // Whitespace cleaned for url
 $asb_social_url_facebook = $asb_settings['asb_social_url_facebook']; // Facebook URL
 $asb_social_url_instagram = $asb_settings['asb_social_url_instagram']; // Instagram URL
-$asb_url_cityguilds = $asb_settings['asb_url_cityguilds']; // City and Guilds URL
 ?>
 
 <footer id="colophon" class="site-footer">

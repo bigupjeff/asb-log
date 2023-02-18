@@ -22,6 +22,6 @@ $homepage_post_id = '17';
 
 	<?php if ( is_user_logged_in() && current_user_can( 'edit_posts' ) ): ?>
     <div class="buttonWrap" method="get" action="#contactForm">
-        <a href="<?php echo admin_url( 'post-new.php?post_type=post' ); ?>" class="button button-outline"><i class="fas fa-pencil-alt"></i>Log a new incident</a>
+        <a href="<?php echo admin_url( 'post-new.php?post_type=incident' ); ?>" class="button button-outline"><i class="fas fa-pencil-alt"></i>Log a new incident</a>
 	</div>
 	<?php endif ?>
