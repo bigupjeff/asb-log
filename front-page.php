@@ -10,14 +10,11 @@ get_header();
 <!-- front-page GRID START -->
 <main class="frontPage-main" id="primary" >
 
-	<section class="topServices">
-		<?php get_template_part( 'template-parts/fp-top-services', 'none' );?>
-	</section>
 	<section class="welcome">
 		<?php get_template_part( 'template-parts/fp-welcome', 'none' );?>
 	</section>
-	<section class="otherServices">
-		<?php get_template_part( 'template-parts/fp-other-services', 'none' );?>
+	<section class="incidentFeed">
+		<?php get_template_part( 'template-parts/incident-feed', 'none' );?>
 	</section>
 
 </main>

@@ -137,17 +137,17 @@ class AsbLogThemeSettings {
     );
 
         add_settings_field(
-            'asb_other_services_count', // id
-            'Number of Incidents to Display', // title
-            array( $this, 'asb_other_services_count_callback' ), // callback
+            'asb_incident_feed_count', // id
+            'Number of incidents per page', // title
+            array( $this, 'asb_incident_feed_count_callback' ), // callback
             'asb_theme_page', // page
             'asb_theme_homepage_section' // section
         );
 
         add_settings_field(
-			'asb_title_secondary_services', // id
-			'Section Title - Secondary Services Grid', // title
-			array( $this, 'asb_title_secondary_services_callback' ), // callback
+			'asb_incident_feed_title', // id
+			'Incidents feed title', // title
+			array( $this, 'asb_incident_feed_title_callback' ), // callback
 			'asb_theme_page', // page
 			'asb_theme_homepage_section' // section
 		);
@@ -177,12 +177,12 @@ class AsbLogThemeSettings {
 			$sanitary_values['asb_social_url_instagram'] = sanitize_text_field( $input['asb_social_url_instagram'] );
 		}
 
-        if ( isset( $input['asb_other_services_count'] ) ) {
-			$sanitary_values['asb_other_services_count'] = sanitize_text_field( $input['asb_other_services_count'] );
+        if ( isset( $input['asb_incident_feed_count'] ) ) {
+			$sanitary_values['asb_incident_feed_count'] = sanitize_text_field( $input['asb_incident_feed_count'] );
 		}
 
-		if ( isset( $input['asb_title_secondary_services'] ) ) {
-			$sanitary_values['asb_title_secondary_services'] = sanitize_text_field( $input['asb_title_secondary_services'] );
+		if ( isset( $input['asb_incident_feed_title'] ) ) {
+			$sanitary_values['asb_incident_feed_title'] = sanitize_text_field( $input['asb_incident_feed_title'] );
 		}
 
 		return $sanitary_values;
@@ -197,7 +197,7 @@ class AsbLogThemeSettings {
 	}
 
     public function asb_theme_social_section_section_callback() {
-        echo '<p>Configure external links for social accounts and accreditations.</p>';
+        echo '<p>Configure external links for social accounts.</p>';
 	}
 
     public function asb_theme_homepage_section_callback() {
@@ -245,17 +245,17 @@ class AsbLogThemeSettings {
 		);
 	}
 
-    public function asb_other_services_count_callback() {
+    public function asb_incident_feed_count_callback() {
 		printf(
-			'<input class="small-text" type="number" min="0" max="20" name="asb_theme_array[asb_other_services_count]" id="asb_other_services_count" value="%s">',
-			isset( $this->asb_theme['asb_other_services_count'] ) ? esc_attr( $this->asb_theme['asb_other_services_count']) : ''
+			'<input class="small-text" type="number" min="0" max="20" name="asb_theme_array[asb_incident_feed_count]" id="asb_incident_feed_count" value="%s">',
+			isset( $this->asb_theme['asb_incident_feed_count'] ) ? esc_attr( $this->asb_theme['asb_incident_feed_count']) : ''
 		);
 	}
 
-	public function asb_title_secondary_services_callback() {
+	public function asb_incident_feed_title_callback() {
 		printf(
-			'<input class="regular-text" type="text" name="asb_theme_array[asb_title_secondary_services]" id="asb_title_secondary_services" value="%s">',
-			isset( $this->asb_theme['asb_title_secondary_services'] ) ? esc_attr( $this->asb_theme['asb_title_secondary_services']) : ''
+			'<input class="regular-text" type="text" name="asb_theme_array[asb_incident_feed_title]" id="asb_incident_feed_title" value="%s">',
+			isset( $this->asb_theme['asb_incident_feed_title'] ) ? esc_attr( $this->asb_theme['asb_incident_feed_title']) : ''
 		);
 	}
 
@@ -272,6 +272,6 @@ if ( is_admin() )
  * $asb_gmaps_api_key = $asb_settings['asb_gmaps_api_key']; // OSM URL
  * $asb_social_url_facebook = $asb_settings['asb_social_url_facebook']; // Facebook URL
  * $asb_social_url_instagram = $asb_settings['asb_social_url_instagram']; // Instagram URL
- * $asb_other_services_count = $asb_settings['asb_other_services_count']; // Other Services Count
- * $asb_title_secondary_services = $asb_settings['asb_title_secondary_services']; // Secondary Services Title
+ * $asb_incident_feed_count = $asb_settings['asb_incident_feed_count']; // Other Services Count
+ * $asb_incident_feed_title = $asb_settings['asb_incident_feed_title']; // Secondary Services Title
  */

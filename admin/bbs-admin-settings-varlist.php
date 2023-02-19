@@ -12,5 +12,5 @@ $asb_phone_number = $asb_settings['asb_phone_number']; // Phone Number
 $asb_gmaps_api_key = $asb_settings['asb_gmaps_api_key']; // OSM URL
 $asb_social_url_facebook = $asb_settings['asb_social_url_facebook']; // Facebook URL
 $asb_social_url_instagram = $asb_settings['asb_social_url_instagram']; // Instagram URL
-$asb_other_services_count = $asb_settings['asb_other_services_count']; // Other Services Count
-$asb_title_secondary_services = $asb_settings['asb_title_secondary_services']; // Secondary Services Title
+$asb_incident_feed_count = $asb_settings['asb_incident_feed_count']; // Other Services Count
+$asb_incident_feed_title = $asb_settings['asb_incident_feed_title']; // Secondary Services Title

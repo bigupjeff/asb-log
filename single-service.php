@@ -28,7 +28,7 @@ get_header();
 
             <?php if( !empty( $image ) ): ?>
                 <div class="post-thumbnail">
-                    <img class="otherServices_img" src="<?php echo $image; ?>" />
+                    <img class="incidentFeed_img" src="<?php echo $image; ?>" />
                 </div>
             <?php endif; ?>
 
