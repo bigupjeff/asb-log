@@ -13,7 +13,7 @@ $asb_social_url_facebook = $asb_settings['asb_social_url_facebook']; // Facebook
 $asb_social_url_instagram = $asb_settings['asb_social_url_instagram']; // Instagram URL
 ?>
 
-<footer id="colophon" class="site-footer">
+<footer id="colophon" class="footer">
 
     <div class="footer_left">
         <div class="footer_contactBox">
@@ -28,7 +28,7 @@ $asb_social_url_instagram = $asb_settings['asb_social_url_instagram']; // Instag
               array(
                   'theme_location' => 'menu-2',
                   'menu_id'        => 'footer-menu',
-                  'container_class' => 'footer-navigation'
+                  'container_class' => 'footerNavigation'
               )
         ); ?>
 	</div>
@@ -43,7 +43,7 @@ $asb_social_url_instagram = $asb_settings['asb_social_url_instagram']; // Instag
 </div>
 <!-- PAGE GRID END -->
 
-<a class="nav_backup" title="Back to top" href="#"><i class="fas fa-arrow-circle-up"></i></a>
+<a class="navBackToTop" title="Back to top" href="#"><i class="fas fa-arrow-circle-up"></i></a>
 
 <?php wp_footer(); ?>
 

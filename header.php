@@ -32,13 +32,13 @@
 <!-- PAGE GRID START -->
 <div id="page" class="site">
 
-	<header id="masthead" class="site-header">
+	<header id="masthead" class="siteHeader">
 
-		<a class="site-header_logo" href="/">
+		<a class="siteHeader_logo" href="/">
 			<img alt="ASB Log logo" src="<?php echo get_template_directory_uri(); ?>/images/logo-asb-log-baked.svg">
 		</a>
-		<nav id="site-navigation" class="main-navigation">
-			<button class="menu-toggle" aria-controls="primary-menu" aria-label="Main Menu" aria-expanded="false">
+		<nav id="site-navigation" class="mainNavigation">
+			<button class="menuToggle" aria-controls="primary-menu" aria-label="Main Menu" aria-expanded="false">
 				<i class="fas fa-bars"></i>
 				<i class="fas fa-times"></i>
 			</button>
@@ -49,12 +49,5 @@
 				)
 			); ?>
 		</nav>
-		<?php $asb_log_description = get_bloginfo( 'description', 'display' );
-		if ( $asb_log_description || is_customize_preview() ) :
-		?>
-			<span class="site-description">
-				<?php echo $asb_log_description; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-			</span>
-		<?php endif; ?>
 
 	</header>
