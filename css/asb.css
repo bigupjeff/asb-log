@@ -66,13 +66,13 @@
 	--asb_theme-yellow2: #ffd60a;
 
     /* Drop Shadows */
-    --asb_shadow: drop-shadow(0 0 1em #0005);
-    --asb_shadow-light: drop-shadow(0 0 1em #0003);
+    --asb_boxShadow: 1px 1px 5px #000b;
+	--asb_cornerRadius: 3px;
 
-    /* Fonts */
+    /* Fonts (all web safe) */
     --asb_font-primary: Georgia, serif;
     --asb_font-secondary: Arial, sans-serif;
-    --asb_font-mono: Consolas, "Liberation Mono", Courier, monospace;
+    --asb_font-mono: 'Courier New', monospace;
 
     /* Relative Font Sizes (% of base size above) */
     --asb_font-xxs: 0.75em;
@@ -88,18 +88,13 @@
 
     /* smooth anchor scrolls */
     scroll-behavior: smooth;
+
+	/* default font */
     color: var(--asb_theme-blue1);
     font-family: var(--asb_font-secondary);
 
-    /* Fluid Units / Base Font Size | 15px @ 48em => 22px @ 120em | Ratio 1.47 */
-    /* font-size: clamp(0.9375em, calc(0.9375rem + ((1vw - 0.48em) * 0.6076)), 1.375em); */
-
-    /* Testing new size */
     /* 11px @ 1em => 21px @ 120em Fluid. (around 14.9px @ 48em)   */
-    font-size: clamp(0.75em, calc(0.75rem + ((1vw - 0.01em) * 0.5252)), 1.3125em);
-
-    /* Apply Default Theme Font Properties */
-    font-weight: 300;
+    /* font-size: clamp(0.75em, calc(0.75rem + ((1vw - 0.01em) * 0.5252)), 1.3125em); */
 }
 
 @media (prefers-reduced-motion) {
@@ -129,15 +124,14 @@ body {
 .site {
     display: grid;
     grid: repeat(3, auto) / 100%;
-    grid-template-areas: "siteHeader"
+    grid-template-areas: "header"
                          "site-main  "
                          "footer";
     place-content: start center;
     min-height: 100vh;
 }
 
-.siteHeader { grid-area: siteHeader; }
-.hero-header { grid-area: siteHeader; } /* front page */
+.header { grid-area: header; }
 .site-main   { grid-area: site-main  ; }
 .footer { grid-area: footer; }
 
@@ -754,31 +748,28 @@ table {
 /* ---------------------------------------------------- ### .mainNavigation -*/
 
 .mainNavigation {
+	gap: 1em;
 	display: flex;
 	position: relative;
-	flex-direction: column;
+	flex-flow: row wrap;
 	align-items: flex-end;
+	transition: height 0.25s;
 	width: fit-content;
 	text-transform: uppercase;
 	font-family: var(--asb_font-primary);
-	font-size: var(--asb_font-m);
-	transition: height 0.25s;
 }
 	.menuToggle {
-		margin-left: auto;
 		outline: none;
 		border: none;
 		background: none;
 		padding: 0;
-		font-size: 1.5em;
 	}
-		.menuToggle > .fa-bars,
-		.menuToggle > .fa-times {
-			justify-content: flex-end;
-			width: 1em;
-			height: 1em;
-		}
-
+	.mainNavigation .fas {
+		justify-content: flex-end;
+		width: 1em;
+		height: 1em;
+		font-size: 30px;
+	}
 		.menuToggle > .fa-bars {
 			display: flex;
 		}
@@ -792,8 +783,8 @@ table {
 		right: 0;
 		justify-content: center;
 		z-index: 20;
-		border-radius: 3px;
-		box-shadow: 1px 1px 5px #000b;
+		border-radius: var( --asb_cornerRadius );
+		box-shadow: var( --asb_boxShadow );
 		background: #fff;
 		padding: 0.5em 1em;
 		width: fit-content;
@@ -921,33 +912,38 @@ table {
 
 
 /* --------------------------------------------------------------- ## Global -*/
-/* --------------------------------------------------------- ### siteHeader -*/
+/* ------------------------------------------------------------- ### .header -*/
 
 
-.siteHeader {
-	display: flex;
-	flex-flow: row wrap;
-	align-items: center;
-	justify-content: space-between;
+.header {
+	grid-area: header;
 	z-index: 10;
 	margin: 0 auto 2em;
 	border-bottom: solid 1px var( --asb_theme-blue3 );
-	box-shadow: 0 2px 2px #0003;
+	box-shadow: var( --asb_boxShadow );
 	background: var(--asb_theme-yellow2);
-	padding: 1em;
 	width: 100%;
-	max-width: 66em;
 }
-    .siteHeader_logo {
+	.header_container {
 		display: flex;
-        width: auto;
-    }
-		.siteHeader_logo img {
-			max-height: 3em;
+		flex-flow: row wrap;
+		align-items: center;
+		justify-content: space-between;
+		margin: 0 auto;
+		padding: 1em;
+		width: 100%;
+		max-width: 66em;
+	}
+		.header_logo {
+			display: flex;
+			width: auto;
 		}
+			.header_logo img {
+				max-height: 3em;
+			}
 
 @media ( min-width: 66em ) {
-	.siteHeader {
+	.header {
 		border-left: solid 1px #bbb;
 		border-right: solid 1px #bbb;
 		border-bottom-left-radius: 3px;
@@ -1192,136 +1188,6 @@ table {
     }
 
 
-/* ------------------------------------------------------ ### .service cards -*/
-
-
-.service {
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: space-between;
-}
-
-    .service_header {
-        gap: 10%;
-        display: flex;
-        flex-flow: row nowrap;
-        align-items: flex-start;
-        justify-content: space-between;
-        padding: 10% 10% 0 10%;
-        height: 25%;
-    }
-
-    .service_iconWrap {
-        display: flex;
-        align-items: flex-end;
-        justify-content: flex-end;
-        width: 20%;
-        max-width: 5em;
-        max-height: 5em;
-    }
-
-    /* This class is baked into the svg files */
-    .service_icon {
-        fill: var(--asb_theme-blue1);
-        padding: 0 10% 10% 0;
-        width: 100%;
-        min-width: 0;
-        height: 100%;
-        min-height: 0;
-    }
-
-    .service_title {
-        margin: 0;
-        line-height: 1.1;
-        text-align: right;
-    }
-
-    .service_description {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        margin: 0;
-        padding: 5% 10% 0% 10%;
-        height: auto;
-        font-family: var(--asb_font_secondary);
-        font-size: var(--asb_font-xs);
-        line-height: 1;
-        white-space: pre-wrap;
-    }
-
-    .service_description > ul  {
-        margin: 0;
-        padding: 0;
-    }
-
-    .service_description > p {
-        margin: 0 0 0.5em 0;
-        padding: 0;
-        line-height: 1.3;
-    }
-
-    .service_description > p:last-child {
-        margin: 0;
-    }
-
-    .service_description > ul {
-        margin: 0 0 0.5em 1.1em;
-        line-height: 0.5;
-        text-transform: capitalize;
-    }
-
-    .service_description > ul:last-child {
-        margin: 0 0 0 1.1em;
-    }
-
-    .service_description > ul > li {
-        margin: 0;
-        line-height: 1.2;
-    }
-
-    .service_footer {
-        display: flex;
-        flex-flow: row-reverse nowrap;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 10% 0 10%;
-        width: 100%;
-        height: 3em;
-        font-size: var(--asb_font-xs);
-    }
-
-    .service_price,
-    .service_price-empty {
-        right: 10%;
-        bottom: 10%;
-        justify-self: flex-end;
-        order: -1;
-        font-weight: 400;
-    }
-
-@media (min-width: 32em) {
-    .service_footer {
-        font-size: var(--asb_font-s);
-    }
-}
-
-@media (min-width: 48em) {
-    .service_footer {
-        height: 4em;
-        font-size: var(--asb_font-m);
-    }
-}
-
-@media (min-width: 75em) {
-    .service_footer {
-        height: 5em;
-    }
-
-    .service_description {
-        font-size: var(--asb_font-xs);
-    }
-}
-
 /* ----------------------------------------------------------- ## Front Page -*/
 /* ------------------------------------------------------------- ### welcome -*/
 
@@ -1376,7 +1242,10 @@ table {
 	grid-template-columns: auto;
 	margin: 0.5em;
 	margin-bottom: 4em;
+	border-radius: var( --asb_cornerRadius );
+	box-shadow: var( --asb_boxShadow );
 	max-width: 100%;
+	overflow: hidden;
 }
 	.incident > div {
 		padding: 1em 0.2em;
@@ -1432,7 +1301,19 @@ table {
 		.incident_image img {
 			object-fit: contain;
 			max-width: 100%;
-			max-height: 300px;
+			max-height: 150px;
+		}
+		.incident_table tr:last-child > td {
+			border-bottom: none;
+		}
+		.incident_table td:first-child {
+			font-weight: 600;
+		}
+		@media ( max-width: 320px ) {
+			.incident_table tr {
+				display: flex;
+				flex-flow: column;
+			}
 		}
 
 @media (min-width: 33em) {
@@ -1511,4 +1392,13 @@ figcaption.blocks-gallery-caption {
 .wp-block-media-text > figure > img {
     height: 100%;
     object-fit: cover;
+}
+
+
+/* --------------------------------------------------------------- ### utils -*/
+
+
+.xScroll {
+	max-height: 20em;
+	overflow-x: auto;
 }

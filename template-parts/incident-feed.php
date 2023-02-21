@@ -87,7 +87,7 @@ while ( $loop->have_posts() ) : $loop->the_post();
 		<div class="incident_label">
 			<span>What happened?</span>
 		</div>
-		<div class="incident_value">
+		<div class="incident_value xScroll">
 			<?php echo $what_happened ?>
 		</div>
 
@@ -105,7 +105,7 @@ while ( $loop->have_posts() ) : $loop->the_post();
 				<span>Location</span>
 			</div>
 			<div class="incident_value">
-				<table>
+				<table class="incident_table">
 					<tr>
 						<td>Address</td>
 						<td><?php echo $location[ 'address' ] ?></td>
@@ -160,9 +160,16 @@ while ( $loop->have_posts() ) : $loop->the_post();
 				<span>Images</span>
 			</div>
 			<div class="incident_value">
-				<a class="incident_image" href="<?php echo $images ?>">
-					<img src="<?php echo $images ?>">
-				</a>
+				<?php 
+					if ( ! is_array( $images ) ) {
+						$images = [ $images ];
+					}
+					foreach( $images as $image) {
+				?>
+					<a class="incident_image" href="<?php echo $image ?>">
+						<img src="<?php echo $image ?>">
+					</a>
+				<?php } // foreach ?>
 			</div>
 		<?php endif ?>
 

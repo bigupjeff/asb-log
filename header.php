@@ -32,22 +32,37 @@
 <!-- PAGE GRID START -->
 <div id="page" class="site">
 
-	<header id="masthead" class="siteHeader">
+	<header id="masthead" class="header">
+		<div class="header_container">
 
-		<a class="siteHeader_logo" href="/">
-			<img alt="ASB Log logo" src="<?php echo get_template_directory_uri(); ?>/images/logo-asb-log-baked.svg">
-		</a>
-		<nav id="site-navigation" class="mainNavigation">
-			<button class="menuToggle" aria-controls="primary-menu" aria-label="Main Menu" aria-expanded="false">
-				<i class="fas fa-bars"></i>
-				<i class="fas fa-times"></i>
-			</button>
-			<?php wp_nav_menu(
-				array(
-					'theme_location' => 'menu-1',
-					'menu_id'        => 'primary-menu',
-				)
-			); ?>
-		</nav>
+			<a class="header_logo" href="/">
+				<img alt="ASB Log logo" src="<?php echo get_template_directory_uri(); ?>/images/logo-asb-log-baked.svg">
+			</a>
+			<nav id="site-navigation" class="mainNavigation">
 
+				<?php if ( ! is_user_logged_in() ): ?>
+					<a title="login" href="/wp-login.php">
+						<i class="fas fa-user-slash"></i>
+					</a>
+				<?php else: ?>
+					<a title="logout" href="/wp-login.php?action=logout">
+						<i class="fas fa-user"></i>
+					</a>
+				<?php endif ?>
+
+				<button title="Menu" class="menuToggle" aria-controls="primary-menu" aria-label="Main Menu" aria-expanded="false">
+					<i class="fas fa-bars"></i>
+					<i class="fas fa-times"></i>
+				</button>
+
+				<?php wp_nav_menu(
+					array(
+						'theme_location' => 'menu-1',
+						'menu_id'        => 'primary-menu',
+					)
+				); ?>
+
+			</nav>
+
+		</div>
 	</header>

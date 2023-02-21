@@ -69,10 +69,10 @@ dependency_check();
 
 
  // ASB Log admin settings
-include get_theme_file_path() . '/admin/bbs-admin-settings.php';
+include get_theme_file_path() . '/admin/asb-admin-settings.php';
 
  // ASB Log custom post type - services
-include get_theme_file_path() . '/admin/bbs-custom-post-types.php';
+include get_theme_file_path() . '/admin/asb-custom-post-types.php';
 
 // Turn off theme and plugin auto-updates
 add_filter( 'auto_update_plugin', '__return_false' );
@@ -83,7 +83,7 @@ add_filter( 'auto_update_theme', '__return_false' );
 */
 function asb_log_scripts() {
     wp_enqueue_style( 'bbs-base', get_stylesheet_uri() );
-    wp_enqueue_style( 'bbs-main', get_template_directory_uri() . '/css/bbs.css');
+    wp_enqueue_style( 'bbs-main', get_template_directory_uri() . '/css/asb.css');
     wp_enqueue_style( 'bbs-fonts', get_template_directory_uri() . '/css/fonts.css');
     wp_enqueue_style( 'font-awesome', get_template_directory_uri() . '/assets/fontawesome/css/all.css');
     wp_enqueue_script( 'bbs-nav-js', get_template_directory_uri() . '/js/navigation.js', array(), _S_VERSION, true );
