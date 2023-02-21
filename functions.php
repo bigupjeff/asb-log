@@ -1,4 +1,6 @@
 <?php
+//namespace Jefferson\AsbLog;
+
 /**
  * ASB Log functions and definitions
  *
@@ -9,100 +11,102 @@
 
 /**
  * Dependcency Check
- * 
+ *
  * All theme and no dependencies makes WordPress a dull WSOD.
- * 
+ *
  * If the dependency check fails, switch back to the previous theme $oldtheme which is passed by
  * after_switch_theme.
- * 
  */
 function dependency_check() {
 
-	$plugin_dependencies = [
-		"Advanced Custom Fields" => 'advanced-custom-fields/acf.php',
-		"SVG Support"			 => 'svg-support/svg-support.php',
-	];
+	$plugin_dependencies = array(
+		'Advanced Custom Fields' => 'advanced-custom-fields/acf.php',
+		'SVG Support'            => 'svg-support/svg-support.php',
+	);
 
-	if (!function_exists('is_plugin_active')) {
-		include_once(ABSPATH . 'wp-admin/includes/plugin.php');
+	if ( ! function_exists( 'is_plugin_active' ) ) {
+		include_once ABSPATH . 'wp-admin/includes/plugin.php';
 	}
 
-	$missing_plugins = [];
-	$active_plugins = get_option( 'active_plugins' );
+	$missing_plugins = array();
+	$active_plugins  = get_option( 'active_plugins' );
 
-	foreach( $plugin_dependencies as $plugin => $path ) {
-		if ( ! in_array( $path , $active_plugins ) ) {
+	foreach ( $plugin_dependencies as $plugin => $path ) {
+		if ( ! in_array( $path, $active_plugins ) ) {
 			array_push( $missing_plugins, "<li><b>{$plugin}</b></li>\n" );
 		}
 	}
 
 	if ( 1 <= count( $missing_plugins ) ) {
-		
-		$plugin_string  = implode( $missing_plugins );
-		$plugin_list    = "<ul>{$plugin_string}</ul>\n";
-		$title          = "Missing Theme Dependencies";
-		$message        = "<h1>{$title}</h1>\n";
-		$message       .= "<p>The following plugins must be installed and activated to use this theme:</p>\n";
-		$message       .= $plugin_list;
-		$message       .=  "<p>Please visit the plugin page to install these plugins.</p>\n";
+
+		$plugin_string = implode( $missing_plugins );
+		$plugin_list   = "<ul>{$plugin_string}</ul>\n";
+		$title         = 'Missing Theme Dependencies';
+		$message       = "<h1>{$title}</h1>\n";
+		$message      .= "<p>The following plugins must be installed and activated to use this theme:</p>\n";
+		$message      .= $plugin_list;
+		$message      .= "<p>Please visit the plugin page to install these plugins.</p>\n";
 
 		// If this is not a preview and the theme has been activated, fallback to default theme.
 		global $wp_customize;
 		if ( ! isset( $wp_customize ) ) {
 			switch_theme( WP_DEFAULT_THEME );
-			$warning_styles  = 'style="color:#fff;font-weight:800;background:red;padding:0 5px;width:fit-content;"';
-			$message        .=  "<p {$warning_styles}>The default theme has been activated to prevent errors.</p>\n";
+			$warning_styles = 'style="color:#fff;font-weight:800;background:red;padding:0 5px;width:fit-content;"';
+			$message       .= "<p {$warning_styles}>The default theme has been activated to prevent errors.</p>\n";
 		}
 
 		wp_die(
 			$message,
 			$title,
-			$args = [
-				"link_text" => "Go to WordPress Plugin Directory",
-				"link_url" 	=> "/wp-admin/plugin-install.php"
-			]
+			$args = array(
+				'link_text' => 'Go to WordPress Plugin Directory',
+				'link_url'  => '/wp-admin/plugin-install.php',
+			)
 		);
 	}
 }
 dependency_check();
 
+/**
+ * Load the PHP autoloader from it's own file
+ */
+require_once get_template_directory() . '/classes/autoload.php';
 
+/**
+ * Setup theme settings and custom post types.
+ */
+use Jefferson\AsbLog\Theme_Settings;
+use Jefferson\AsbLog\Custom_Post_Types;
+if ( is_admin() ) {
+	new Theme_Settings();
+}
+new Custom_Post_Types();
 
- // ASB Log admin settings
-include get_theme_file_path() . '/admin/asb-admin-settings.php';
-
- // ASB Log custom post type - services
-include get_theme_file_path() . '/admin/asb-custom-post-types.php';
-
-// Turn off theme and plugin auto-updates
+/**
+ * Turn off theme and plugin auto-updates.
+ */
 add_filter( 'auto_update_plugin', '__return_false' );
 add_filter( 'auto_update_theme', '__return_false' );
 
 /**
-* Enqueue scripts and styles.
-*/
-function asb_log_scripts() {
-    wp_enqueue_style( 'bbs-base', get_stylesheet_uri() );
-    wp_enqueue_style( 'bbs-main', get_template_directory_uri() . '/css/asb.css');
-    wp_enqueue_style( 'bbs-fonts', get_template_directory_uri() . '/css/fonts.css');
-    wp_enqueue_style( 'font-awesome', get_template_directory_uri() . '/assets/fontawesome/css/all.css');
-    wp_enqueue_script( 'bbs-nav-js', get_template_directory_uri() . '/js/navigation.js', array(), _S_VERSION, true );
-    wp_enqueue_script( 'gsap', '//cdnjs.cloudflare.com/ajax/libs/gsap/3.6.1/gsap.min.js', array (), '3.6.1', true );
-    wp_enqueue_script( 'gsap_cssrule', '//cdnjs.cloudflare.com/ajax/libs/gsap/3.6.1/CSSRulePlugin.min.js', array (), '3.6.1', true );
-    wp_enqueue_script( 'gsap_scrolltrigger', '//cdnjs.cloudflare.com/ajax/libs/gsap/3.6.1/ScrollTrigger.min.js', array (), '3.6.1', true );
-    wp_enqueue_script( 'bbs-reveal-js', get_template_directory_uri() . '/js/reveal-animation.js', array( 'gsap', 'gsap_cssrule', 'gsap_scrolltrigger', 'jquery' ), '1.0', true );
-    wp_enqueue_script( 'bbs-header-js', get_template_directory_uri() . '/js/header-animation.js', array( 'gsap', 'gsap_cssrule', 'gsap_scrolltrigger', 'jquery' ), '1.0', true );
-    wp_enqueue_script( 'bbs-nav-backup-js', get_template_directory_uri() . '/js/nav-backup.js', array( 'jquery' ), '1.0', true );
-    if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
-        wp_enqueue_script( 'comment-reply' );
-    }
-    if (!is_admin() && $GLOBALS['pagenow'] != 'wp-login.php') {
-        wp_deregister_script('jquery');
-        wp_register_script('jquery', '//ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js', false, '1.11.2');
-        wp_enqueue_script('jquery');
-    }
+ * Enqueue scripts and styles
+ */
+function enqueue_scripts_and_styles() {
+	if ( is_customize_preview() ) {
+		wp_enqueue_script( 'asb_customizer_js', get_template_directory_uri() . '/js/customizer.js', array(), filemtime( get_template_directory() . '/js/customizer.js' ), true );
+	}
+	if ( ! is_admin() && $GLOBALS['pagenow'] !== 'wp-login.php' ) {
+		wp_enqueue_style( 'style_css', get_template_directory_uri() . '/style.css', array(), filemtime( get_template_directory() . '/style.css' ), 'all' );
+		// De-register wp jquery and use CDN.
+		wp_deregister_script( 'jquery' );
+		wp_enqueue_script( 'jquery', '//ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js', array(), '3.6.0', true );
+
+		wp_enqueue_style( 'font-awesome', get_template_directory_uri() . '/assets/fontawesome/css/all.min.css' );
+
+		wp_enqueue_script( 'asb_frontend_js', get_template_directory_uri() . '/js/frontend.js', array( 'jquery' ), filemtime( get_template_directory() . '/js/frontend.js' ), true );
+	}
 }
-add_action( 'wp_enqueue_scripts', 'asb_log_scripts' );
+add_action( 'wp_enqueue_scripts', 'enqueue_scripts_and_styles' );
 
  // Tell WordPress to dynamically use the page title as the meta title tag
  add_theme_support( 'title-tag' );
@@ -147,18 +151,18 @@ if ( ! function_exists( 'asb_log_setup' ) ) :
 		 */
 		add_theme_support( 'post-thumbnails' );
 
-        // Enable custom image sizes and set the sizes required for the theme
-        add_theme_support( 'pop-up-banner' );
-        add_image_size( 'service-tile', 960, 960, TRUE );
-        add_image_size( 'review-avatar', 150, 150, TRUE );
-        add_image_size( 'full-width-banner', 1920, 480, TRUE );
-        add_image_size( 'page-featured', 615, 615, TRUE );
+		// Enable custom image sizes and set the sizes required for the theme
+		add_theme_support( 'pop-up-banner' );
+		add_image_size( 'service-tile', 960, 960, true );
+		add_image_size( 'review-avatar', 150, 150, true );
+		add_image_size( 'full-width-banner', 1920, 480, true );
+		add_image_size( 'page-featured', 615, 615, true );
 
 		// This theme uses wp_nav_menu() in one location.
 		register_nav_menus(
 			array(
 				'menu-1' => esc_html__( 'Primary', 'asb-log' ),
-                'menu-2' => esc_html__( 'Footer', 'asb-log' ),
+				'menu-2' => esc_html__( 'Footer', 'asb-log' ),
 			)
 		);
 
@@ -212,17 +216,6 @@ if ( ! function_exists( 'asb_log_setup' ) ) :
 endif;
 add_action( 'after_setup_theme', 'asb_log_setup' );
 
-/**
- * Set the content width in pixels, based on the theme's design and stylesheet.
- *
- * Priority 0 to make it available to lower priority callbacks.
- *
- * @global int $content_width
- */
-function asb_log_content_width() {
-	$GLOBALS['content_width'] = apply_filters( 'asb_log_content_width', 640 );
-}
-add_action( 'after_setup_theme', 'asb_log_content_width', 0 );
 
 /**
  * Register widget area.
@@ -272,48 +265,51 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 }
 
 // Return an alternate title, without prefix, for every type used in the get_the_archive_title().
-add_filter('get_the_archive_title', function ($title) {
-    if ( is_category() ) {
-        $title = single_cat_title( '', false );
-    } elseif ( is_tag() ) {
-        $title = single_tag_title( '', false );
-    } elseif ( is_author() ) {
-        $title = '<span class="vcard">' . get_the_author() . '</span>';
-    } elseif ( is_year() ) {
-        $title = get_the_date( _x( 'Y', 'yearly archives date format' ) );
-    } elseif ( is_month() ) {
-        $title = get_the_date( _x( 'F Y', 'monthly archives date format' ) );
-    } elseif ( is_day() ) {
-        $title = get_the_date( _x( 'F j, Y', 'daily archives date format' ) );
-    } elseif ( is_tax( 'post_format' ) ) {
-        if ( is_tax( 'post_format', 'post-format-aside' ) ) {
-            $title = _x( 'Asides', 'post format archive title' );
-        } elseif ( is_tax( 'post_format', 'post-format-gallery' ) ) {
-            $title = _x( 'Galleries', 'post format archive title' );
-        } elseif ( is_tax( 'post_format', 'post-format-image' ) ) {
-            $title = _x( 'Images', 'post format archive title' );
-        } elseif ( is_tax( 'post_format', 'post-format-video' ) ) {
-            $title = _x( 'Videos', 'post format archive title' );
-        } elseif ( is_tax( 'post_format', 'post-format-quote' ) ) {
-            $title = _x( 'Quotes', 'post format archive title' );
-        } elseif ( is_tax( 'post_format', 'post-format-link' ) ) {
-            $title = _x( 'Links', 'post format archive title' );
-        } elseif ( is_tax( 'post_format', 'post-format-status' ) ) {
-            $title = _x( 'Statuses', 'post format archive title' );
-        } elseif ( is_tax( 'post_format', 'post-format-audio' ) ) {
-            $title = _x( 'Audio', 'post format archive title' );
-        } elseif ( is_tax( 'post_format', 'post-format-chat' ) ) {
-            $title = _x( 'Chats', 'post format archive title' );
-        }
-    } elseif ( is_post_type_archive() ) {
-        $title = post_type_archive_title( '', false );
-    } elseif ( is_tax() ) {
-        $title = single_term_title( '', false );
-    } else {
-        $title = __( 'Archives' );
-    }
-    return $title;
-});
+add_filter(
+	'get_the_archive_title',
+	function ( $title ) {
+		if ( is_category() ) {
+			$title = single_cat_title( '', false );
+		} elseif ( is_tag() ) {
+			$title = single_tag_title( '', false );
+		} elseif ( is_author() ) {
+			$title = '<span class="vcard">' . get_the_author() . '</span>';
+		} elseif ( is_year() ) {
+			$title = get_the_date( _x( 'Y', 'yearly archives date format' ) );
+		} elseif ( is_month() ) {
+			$title = get_the_date( _x( 'F Y', 'monthly archives date format' ) );
+		} elseif ( is_day() ) {
+			$title = get_the_date( _x( 'F j, Y', 'daily archives date format' ) );
+		} elseif ( is_tax( 'post_format' ) ) {
+			if ( is_tax( 'post_format', 'post-format-aside' ) ) {
+				$title = _x( 'Asides', 'post format archive title' );
+			} elseif ( is_tax( 'post_format', 'post-format-gallery' ) ) {
+				$title = _x( 'Galleries', 'post format archive title' );
+			} elseif ( is_tax( 'post_format', 'post-format-image' ) ) {
+				$title = _x( 'Images', 'post format archive title' );
+			} elseif ( is_tax( 'post_format', 'post-format-video' ) ) {
+				$title = _x( 'Videos', 'post format archive title' );
+			} elseif ( is_tax( 'post_format', 'post-format-quote' ) ) {
+				$title = _x( 'Quotes', 'post format archive title' );
+			} elseif ( is_tax( 'post_format', 'post-format-link' ) ) {
+				$title = _x( 'Links', 'post format archive title' );
+			} elseif ( is_tax( 'post_format', 'post-format-status' ) ) {
+				$title = _x( 'Statuses', 'post format archive title' );
+			} elseif ( is_tax( 'post_format', 'post-format-audio' ) ) {
+				$title = _x( 'Audio', 'post format archive title' );
+			} elseif ( is_tax( 'post_format', 'post-format-chat' ) ) {
+				$title = _x( 'Chats', 'post format archive title' );
+			}
+		} elseif ( is_post_type_archive() ) {
+			$title = post_type_archive_title( '', false );
+		} elseif ( is_tax() ) {
+			$title = single_term_title( '', false );
+		} else {
+			$title = __( 'Archives' );
+		}
+		return $title;
+	}
+);
 
 // Add Google Tag Manager code in <head>
 function google_tag_manager_head() { ?>
@@ -323,51 +319,59 @@ new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-P8N792F');</script>
-<!-- End Google Tag Manager --><?php
+<!-- End Google Tag Manager -->
+	<?php
 }
 add_action( 'wp_head', 'google_tag_manager_head' );
 
 // Add Google Tag Manager code immediately below opening <body> tag
-function google_tag_manager_body() { ?>
+function google_tag_manager_body() {
+	?>
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P8N792F"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) --><?php
+<!-- End Google Tag Manager (noscript) -->
+	<?php
 }
 add_action( 'genesis_before', 'google_tag_manager_body' );
 
 // Remove TAX type CATEGORY from sitemap
 function remove_tax_from_sitemap( $taxonomies ) {
-     unset( $taxonomies['category'] );
-     return $taxonomies;
+	 unset( $taxonomies['category'] );
+	 return $taxonomies;
 }
 add_filter( 'wp_sitemaps_taxonomies', 'remove_tax_from_sitemap' );
 
 // Remove USERS from sitemap
-add_filter( 'wp_sitemaps_add_provider', function ($provider, $name) {
-  return ( $name == 'users' ) ? false : $provider;
-}, 10, 2);
+add_filter(
+	'wp_sitemaps_add_provider',
+	function ( $provider, $name ) {
+		return ( $name == 'users' ) ? false : $provider;
+	},
+	10,
+	2
+);
 
 
 // Clean bloat from wp_head hook
 // misc
-remove_action('wp_head', 'rsd_link');
-remove_action('wp_head', 'wlwmanifest_link');
-remove_action('wp_head', 'wp_generator');
+remove_action( 'wp_head', 'rsd_link' );
+remove_action( 'wp_head', 'wlwmanifest_link' );
+remove_action( 'wp_head', 'wp_generator' );
 // related page links
-remove_action('wp_head', 'index_rel_link');
-remove_action('wp_head', 'start_post_rel_link', 10, 0);
-remove_action('wp_head', 'parent_post_rel_link', 10, 0);
-remove_action('wp_head', 'adjacent_posts_rel_link', 10, 0);
-remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0 );
+remove_action( 'wp_head', 'index_rel_link' );
+remove_action( 'wp_head', 'start_post_rel_link', 10, 0 );
+remove_action( 'wp_head', 'parent_post_rel_link', 10, 0 );
+remove_action( 'wp_head', 'adjacent_posts_rel_link', 10, 0 );
+remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0 );
 // old emoji support
 remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
 remove_action( 'wp_print_styles', 'print_emoji_styles' );
 // rss feeds
 remove_action( 'wp_head', 'feed_links', 2 );
-remove_action('wp_head', 'feed_links_extra', 3);
+remove_action( 'wp_head', 'feed_links_extra', 3 );
 // shortlink
-remove_action('wp_head', 'wp_shortlink_wp_head', 10, 0);
+remove_action( 'wp_head', 'wp_shortlink_wp_head', 10, 0 );
 
 // Remove default title meta function
 remove_action( 'wp_head', '_wp_render_title_tag', 1 );

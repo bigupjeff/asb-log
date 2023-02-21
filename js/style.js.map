@@ -1,0 +1,1 @@
+{"version":3,"file":"style.js","mappings":";;;AAAA;AACA;AACA;AACA;AACA;;AAE6B;AACD","sources":["webpack:///./src/css/style.js"],"sourcesContent":["/**\n * Webpack entry point.\n * \n * @link https://metabox.io/modernizing-javascript-code-in-wordpress/\n */\n\nimport './frontend/base.scss'\nimport './frontend/asb.scss'\n"],"names":[],"sourceRoot":""}

@@ -1,0 +1,15 @@
+{
+    "themeName": "ASB Log",
+	"themeUri": "https://github.com/wordpressjeff/asb-log#readme",
+	"author": "Jefferson Real",
+	"authorUri": "https://jeffersonreal.uk",
+	"description": "A WordPress theme for logging anti-social behaviour.",
+	"tags": "custom-post-type, custom-fields",
+    "version": "0.1.0",
+	"requiresAtLeast": "5.0",
+	"testedUpTo": "6.1.1",
+	"requiresPhp": "8.0",
+    "license": "GPL-3.0-or-later",
+	"licenseUri": "https://www.gnu.org/licenses/gpl-3.0.html",
+	"textDomain": "asb-log"
+}
