@@ -296,8 +296,12 @@ class Custom_Post_Types {
 	 */
 	public function my_acf_google_map_api( $api ) {
 		$asb_theme_options = get_option( 'asb_theme_array' );
-		$api['key']        = $asb_theme_options['asb_gmaps_api_key'];
-		return $api;
+		if ( isset( $asb_theme_options['asb_gmaps_api_key'] ) ) {
+			$api['key'] = $asb_theme_options['asb_gmaps_api_key'];
+			return $api;
+		} else {
+			return null;
+		}
 	}
 
 	/**

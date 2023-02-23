@@ -1,14 +1,15 @@
 <?php
-// The incident feed Template Part for ASB Log
-// 2023 © ASB Log
-// Author: Jefferson Real
-// URL: https://jeffersonreal.uk
+/**
+ * Incident feed template part
+ *
+ * @package ASB_Log
+ */
 
-$asb_settings = get_option( 'asb_theme_array' ); // Serialized array of all Options
+$asb_settings = get_option( 'asb_theme_array' ); // Serialized array of theme options.
 
 ?>
 
-<?php if ( isset( $asb_settings['asb_incident_feed_title'] ) ): ?>
+<?php if ( isset( $asb_settings['asb_incident_feed_title'] ) ) : ?>
 	<div class="incidentFeed_title">
 		<h2><?php echo $asb_settings['asb_incident_feed_title']; ?></h2>
 	</div>
@@ -30,7 +31,8 @@ $args = array(
 );
 
 $loop = new WP_Query( $args );
-while ( $loop->have_posts() ) : $loop->the_post();
+while ( $loop->have_posts() ) :
+	$loop->the_post();
 	/* ACF custom field data */
 	$date                    = get_field( 'date' );
 	$time_started            = get_field( 'time_started' );
@@ -44,43 +46,40 @@ while ( $loop->have_posts() ) : $loop->the_post();
 	$file_attachement        = get_field( 'file_attachement' );
 
 	/* WP post data */
-	$id    = get_the_ID();
-	$title = the_title( '', '', false );
-	$url   = sanitize_title( $title );
-?>
+	$incident_id    = get_the_ID();
+	$incident_title = the_title( '', '', false );
+	$incident_url   = sanitize_title( $incident_title );
+	?>
 
-	<div class="incident" id="indcident-<?php echo $id; ?>">
-
-		<div class="incident_header">
-			<?php echo $date ?>
-		</div>
+	<div class="incident" id="indcident-<?php echo $incident_id; ?>">
 
 		<div class="incident_header">
-			<?php echo $title ?>
+			<a href="<?php echo $incident_url; ?>">
+				<?php echo $date . ' - ' . $incident_title; ?>
+			</a>
 		</div>
 
-		<?php if ( is_user_logged_in() && current_user_can( 'edit_posts' ) ): ?>
-			<div class="incident_editBar"></div>
+		<?php if ( is_user_logged_in() && current_user_can( 'edit_posts' ) ) : ?>
 			<div class="incident_editBar">
-			<a class="incident_editLink button button-tight" href="/wp-admin/post.php?post=<?php echo $id; ?>&action=edit">Edit</a>
+				<a class="incident_editLink button button-outline button-tight" href="/wp-admin/post.php?post=<?php echo $incident_id; ?>&action=edit">Edit</a>
 			</div>
 		<?php endif ?>
 
-		<?php if ( !empty( $time_started ) ): ?>
+		<?php if ( ! empty( $time_started ) ) : ?>
 			<div class="incident_label">
 				<span>Time started</span>
 			</div>
 			<div class="incident_value">
-				<span><?php echo $time_started ?></span>
+				<span><?php echo $time_started; ?></span>
 			</div>
 		<?php endif ?>
 
-		<?php if ( !empty( $time_stopped ) ): ?>
+		<?php if ( ! empty( $time_stopped ) ) : ?>
 			<div class="incident_label">
 				<span>Time stopped</span>
 			</div>
 			<div class="incident_value">
-				<span><?php echo $time_stopped ?></span>
+				<span><?php echo $time_stopped; ?></span>
 			</div>
 		<?php endif ?>
 
@@ -88,19 +87,19 @@ while ( $loop->have_posts() ) : $loop->the_post();
 			<span>What happened?</span>
 		</div>
 		<div class="incident_value xScroll">
-			<?php echo $what_happened ?>
+			<?php echo $what_happened; ?>
 		</div>
 
-		<?php if ( !empty( $how_did_this_affect_you ) ): ?>
+		<?php if ( ! empty( $how_did_this_affect_you ) ) : ?>
 			<div class="incident_label">
 				<span>How did this affect you?</span>
 			</div>
 			<div class="incident_value">
-				<?php echo $how_did_this_affect_you ?>
+				<?php echo $how_did_this_affect_you; ?>
 			</div>
 		<?php endif ?>
 
-		<?php if ( !empty( $location ) ): ?>
+		<?php if ( ! empty( $location ) ) : ?>
 			<div class="incident_label">
 				<span>Location</span>
 			</div>
@@ -108,22 +107,22 @@ while ( $loop->have_posts() ) : $loop->the_post();
 				<table class="incident_table">
 					<tr>
 						<td>Address</td>
-						<td><?php echo $location[ 'address' ] ?></td>
+						<td><?php echo $location['address']; ?></td>
 					</tr>
 					<tr>
 						<td>Latitude</td>
-						<td><?php echo $location[ 'lat' ] ?></td>
+						<td><?php echo $location['lat']; ?></td>
 					</tr>
 					<tr>
 						<td>Longitude</td>
-						<td><?php echo $location[ 'lng' ] ?></td>
+						<td><?php echo $location['lng']; ?></td>
 					</tr>
 				</table> 
 				<?php
-					$minLong = $location[ 'lng' ] + 0.0018;
-					$minLat  = $location[ 'lat' ] - 0.00075;
-					$maxLong = $location[ 'lng' ] - 0.0018;
-					$maxLat  = $location[ 'lat' ] + 0.00075;
+					$minLong = $location['lng'] + 0.0018;
+					$minLat  = $location['lat'] - 0.00075;
+					$maxLong = $location['lng'] - 0.0018;
+					$maxLat  = $location['lat'] + 0.00075;
 				?>
 				<iframe
 					class="incident_map"
@@ -133,61 +132,61 @@ while ( $loop->have_posts() ) : $loop->the_post();
 					scrolling="no"
 					marginheight="0"
 					marginwidth="0"
-					src="https://www.openstreetmap.org/export/embed.html?bbox=<?php echo "{$minLong}%2C{$minLat}%2C{$maxLong}%2C{$maxLat}" ?>&amp;layer=mapnik&amp;marker=<?php echo "{$location[ 'lat' ]}%2C{$location[ 'lng' ]}" ?>"
+					src="https://www.openstreetmap.org/export/embed.html?bbox=<?php echo "{$minLong}%2C{$minLat}%2C{$maxLong}%2C{$maxLat}"; ?>&amp;layer=mapnik&amp;marker=<?php echo "{$location[ 'lat' ]}%2C{$location[ 'lng' ]}"; ?>"
 					style="border: 1px solid black"
 				>
 				</iframe>
 				<br/>
 				<small>
-					<a href="https://www.openstreetmap.org/#map=17/<?php echo "{$location[ 'lat' ]}/{$location[ 'lng' ]}" ?>">
+					<a href="https://www.openstreetmap.org/#map=17/<?php echo "{$location[ 'lat' ]}/{$location[ 'lng' ]}"; ?>">
 						View Larger Map
 					</a>
 				</small>
 			</div>
 		<?php endif ?>
 
-		<?php if ( !empty( $witness_details ) ): ?>
+		<?php if ( ! empty( $witness_details ) ) : ?>
 			<div class="incident_label">
 				<span>Witness details</span>
 			</div>
 			<div class="incident_value">
-				<pre><?php echo $witness_details ?></pre>
+				<pre><?php echo $witness_details; ?></pre>
 			</div>
 		<?php endif ?>
 
-		<?php if ( !empty( $images ) ): ?>
+		<?php if ( ! empty( $images ) ) : ?>
 			<div class="incident_label">
 				<span>Images</span>
 			</div>
 			<div class="incident_value">
-				<?php 
-					if ( ! is_array( $images ) ) {
-						$images = [ $images ];
-					}
-					foreach( $images as $image) {
-				?>
-					<a class="incident_image" href="<?php echo $image ?>">
-						<img src="<?php echo $image ?>">
+				<?php
+				if ( ! is_array( $images ) ) {
+					$images = array( $images );
+				}
+				foreach ( $images as $image ) {
+					?>
+					<a target="_blank" class="incident_image" href="<?php echo $image; ?>">
+						<img src="<?php echo $image; ?>">
 					</a>
 				<?php } // foreach ?>
 			</div>
 		<?php endif ?>
 
-		<?php if ( !empty( $video_url ) ): ?>
+		<?php if ( ! empty( $video_url ) ) : ?>
 			<div class="incident_label">
 				<span>Video Link</span>
 			</div>
 			<div class="incident_value">
-				<a href="<?php echo $video_url ?>"><?php echo $video_url ?></a>
+				<a target="_blank" href="<?php echo $video_url; ?>"><?php echo $video_url; ?></a>
 			</div>
 		<?php endif ?>
 
-		<?php if ( !empty( $file_attachement ) ): ?>
+		<?php if ( ! empty( $file_attachement ) ) : ?>
 			<div class="incident_label">
 				<span>Files</span>
 			</div>
 			<div class="incident_value">
-				<a href="<?php echo $file_attachement ?>"><?php echo $file_attachement ?></a>
+				<a target="_blank" href="<?php echo $file_attachement; ?>"><?php echo $file_attachement; ?></a>
 			</div>
 		<?php endif ?>
 

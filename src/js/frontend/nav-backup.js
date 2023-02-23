@@ -1,33 +1,44 @@
 /**
- * File nav-backup.js.
- * ASB Log Theme
- * Handles back-to-top button functionality
+ * Handle back-to-top button functionality
  *
- * Author - Jefferson Real
- * URL - jeffersonreal.uk
  */
 
 const navBackup = () => {
 
-	/* Scroll to top when arrow up clicked BEGIN*/
-	$( window ).scroll( function() {
-		var height = $( window ).scrollTop()
-		if ( height > 100 ) {
-			$( '.navBackToTop' ).fadeIn()
-		} else {
-			$( '.navBackToTop' ).fadeOut()
+	const button     = document.querySelector( '.navBackToTop' )
+	const doc        = document.documentElement
+	const scrollType = window.matchMedia( '( prefers-reduced-motion: reduce )' ) ? 'auto': 'smooth'
+
+	if ( ! button ) return
+
+	const initialise = () => {
+
+		window.onscroll = () => {
+			var height = doc.scrollTop
+			if ( height > 100 ) {
+				button.style.visibility = 'visible'
+				button.style.right = '4px'
+			} else {
+				button.style.right = '-110%'
+				button.style.visibility = 'hidden'
+			}
 		}
-	} )
-	$( document ).ready( function() {
-		$( ".navBackToTop" ).click( function( event ) {
+
+		button.addEventListener( 'click', ( event ) => {
 			event.preventDefault()
-			$( "html, body" ).animate( { scrollTop: 0 }, "slow" )
-			return false
+			window.scrollTo( {
+				top: 0,
+				behavior: scrollType
+			} )
 		} )
+	}
 
-	} )
-	/* Scroll to top when arrow up clicked END*/
-
+    let docLoaded = setInterval( () => {
+        if( document.readyState === 'complete' ) {
+            clearInterval( docLoaded )
+			initialise()
+        }
+    }, 100 )
 }
 
 export { navBackup }

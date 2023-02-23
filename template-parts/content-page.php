@@ -10,7 +10,7 @@
 
 <article class="article" id="post-<?php the_ID(); ?>">
 
-    <?php asb_log_post_thumbnail(); ?>
+	<?php asb_log_post_thumbnail(); ?>
 
 	<header class="entry-header">
 
@@ -19,14 +19,15 @@
 	</header>
 	<div class="entry-content">
 
-        <?php the_content(); ?>
+		<?php the_content(); ?>
 
 	</div>
 
 	<?php if ( get_edit_post_link() ) : ?>
 		<footer class="entry-footer">
 
-			<?php edit_post_link(
+			<?php
+			edit_post_link(
 				sprintf(
 					wp_kses(
 						/* translators: %s: Name of current post. Only visible to screen readers */
@@ -41,7 +42,8 @@
 				),
 				'<span class="edit-link">',
 				'</span>'
-			); ?>
+			);
+			?>
 
 		</footer>
 	<?php endif; ?>
