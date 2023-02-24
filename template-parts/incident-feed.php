@@ -103,7 +103,7 @@ while ( $loop->have_posts() ) :
 			<div class="incident_label">
 				<span>Location</span>
 			</div>
-			<div class="incident_value">
+			<div class="incident_value location">
 				<table class="incident_table">
 					<tr>
 						<td>Address</td>
@@ -118,30 +118,31 @@ while ( $loop->have_posts() ) :
 						<td><?php echo $location['lng']; ?></td>
 					</tr>
 				</table> 
-				<?php
-					$minLong = $location['lng'] + 0.0018;
-					$minLat  = $location['lat'] - 0.00075;
-					$maxLong = $location['lng'] - 0.0018;
-					$maxLat  = $location['lat'] + 0.00075;
-				?>
-				<iframe
-					class="incident_map"
-					width="100%"
-					height="350"
-					frameborder="0"
-					scrolling="no"
-					marginheight="0"
-					marginwidth="0"
-					src="https://www.openstreetmap.org/export/embed.html?bbox=<?php echo "{$minLong}%2C{$minLat}%2C{$maxLong}%2C{$maxLat}"; ?>&amp;layer=mapnik&amp;marker=<?php echo "{$location[ 'lat' ]}%2C{$location[ 'lng' ]}"; ?>"
-					style="border: 1px solid black"
-				>
-				</iframe>
-				<br/>
-				<small>
-					<a href="https://www.openstreetmap.org/#map=17/<?php echo "{$location[ 'lat' ]}/{$location[ 'lng' ]}"; ?>">
-						View Larger Map
-					</a>
-				</small>
+				<div class="incident_map">
+					<?php
+						$minLong = $location['lng'] + 0.0018;
+						$minLat  = $location['lat'] - 0.00075;
+						$maxLong = $location['lng'] - 0.0018;
+						$maxLat  = $location['lat'] + 0.00075;
+					?>
+					<iframe
+						width="100%"
+						height="100%"
+						frameborder="0"
+						scrolling="no"
+						marginheight="0"
+						marginwidth="0"
+						src="https://www.openstreetmap.org/export/embed.html?bbox=<?php echo "{$minLong}%2C{$minLat}%2C{$maxLong}%2C{$maxLat}"; ?>&amp;layer=mapnik&amp;marker=<?php echo "{$location[ 'lat' ]}%2C{$location[ 'lng' ]}"; ?>"
+						style="border: 1px solid black"
+					>
+					</iframe>
+					<br/>
+					<small>
+						<a href="https://www.openstreetmap.org/#map=17/<?php echo "{$location[ 'lat' ]}/{$location[ 'lng' ]}"; ?>">
+							View Larger Map
+						</a>
+					</small>
+				</div>
 			</div>
 		<?php endif ?>
 

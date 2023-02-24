@@ -553,6 +553,7 @@ textarea:focus {
     flex-shrink: 0;
     align-items: center;
     justify-content: center;
+	transition: 0.25s;
     z-index: 10;
     border: none;
     background: var( --asb_theme-blue3 );
@@ -672,7 +673,6 @@ a:hover {
 table {
     border-spacing: 0;
     width: 100%;
-    line-height: 3;
 }
 
     .pricelist#breed-pricelist > figure > table > tbody {
@@ -1338,14 +1338,12 @@ table {
 			white-space: pre-wrap;
 			font-family: var( --asb_font-secondary );
 		}
-		.incident_map {
-			pointer-events: none;
-		}
-		.incident_image img {
-			object-fit: contain;
-			max-width: 100%;
-			max-height: 150px;
-		}
+
+
+	.incident_value.location {
+		display: flex;
+		flex-flow: column;
+
 		.incident_table tr:last-child > td {
 			border-bottom: none;
 		}
@@ -1357,6 +1355,24 @@ table {
 				display: flex;
 				flex-flow: column;
 			}
+		}
+
+		.incident_map {
+			display: flex;
+			flex-flow: column;
+
+			@media ( min-width: 320px ) {
+				.incident_map {
+					flex-flow: row wrap;
+				}
+			}
+		}
+	}
+
+		.incident_image img {
+			object-fit: contain;
+			max-width: 100%;
+			max-height: 150px;
 		}
 
 @media (min-width: 33em) {
