@@ -127,7 +127,7 @@ while ( $loop->have_posts() ) :
 					?>
 					<iframe
 						width="100%"
-						height="100%"
+						height="auto"
 						frameborder="0"
 						scrolling="no"
 						marginheight="0"
@@ -136,7 +136,6 @@ while ( $loop->have_posts() ) :
 						style="border: 1px solid black"
 					>
 					</iframe>
-					<br/>
 					<small>
 						<a href="https://www.openstreetmap.org/#map=17/<?php echo "{$location[ 'lat' ]}/{$location[ 'lng' ]}"; ?>">
 							View Larger Map

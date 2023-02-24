@@ -10,8 +10,8 @@ namespace Jefferson\AsbLog;
  * $asb_email_address = $asb_settings['asb_email_address']; // Email Address
  * $asb_phone_number = $asb_settings['asb_phone_number']; // Phone Number
  * $asb_gmaps_api_key = $asb_settings['asb_gmaps_api_key']; // Google Maps API Key
- * $asb_social_url_facebook = $asb_settings['asb_social_url_facebook']; // Facebook URL
- * $asb_social_url_instagram = $asb_settings['asb_social_url_instagram']; // Instagram URL
+ * $asb_facebook_url = $asb_settings['asb_facebook_url']; // Facebook URL
+ * $asb_instagram_url = $asb_settings['asb_instagram_url']; // Instagram URL
  * $asb_incident_feed_count = $asb_settings['asb_incident_feed_count']; // Incident Pagination Count
  * $asb_incident_feed_title = $asb_settings['asb_incident_feed_title']; // Incident Feed Title
  */
@@ -124,17 +124,17 @@ class Theme_Settings {
 		);
 
 		add_settings_field(
-			'asb_social_url_facebook',
+			'asb_facebook_url',
 			'Social URL - Facebook',
-			array( $this, 'asb_social_url_facebook_callback' ),
+			array( $this, 'asb_facebook_url_callback' ),
 			'asb_theme_page',
 			'asb_theme_social_section'
 		);
 
 		add_settings_field(
-			'asb_social_url_instagram',
+			'asb_instagram_url',
 			'Social URL - Instagram',
-			array( $this, 'asb_social_url_instagram_callback' ),
+			array( $this, 'asb_instagram_url_callback' ),
 			'asb_theme_page',
 			'asb_theme_social_section'
 		);
@@ -181,12 +181,12 @@ class Theme_Settings {
 			$sanitary_values['asb_gmaps_api_key'] = sanitize_text_field( $input['asb_gmaps_api_key'] );
 		}
 
-		if ( isset( $input['asb_social_url_facebook'] ) ) {
-			$sanitary_values['asb_social_url_facebook'] = sanitize_text_field( $input['asb_social_url_facebook'] );
+		if ( isset( $input['asb_facebook_url'] ) ) {
+			$sanitary_values['asb_facebook_url'] = sanitize_text_field( $input['asb_facebook_url'] );
 		}
 
-		if ( isset( $input['asb_social_url_instagram'] ) ) {
-			$sanitary_values['asb_social_url_instagram'] = sanitize_text_field( $input['asb_social_url_instagram'] );
+		if ( isset( $input['asb_instagram_url'] ) ) {
+			$sanitary_values['asb_instagram_url'] = sanitize_text_field( $input['asb_instagram_url'] );
 		}
 
 		if ( isset( $input['asb_incident_feed_count'] ) ) {
@@ -243,17 +243,17 @@ class Theme_Settings {
 		);
 	}
 
-	public function asb_social_url_facebook_callback() {
+	public function asb_facebook_url_callback() {
 		printf(
-			'<input class="regular-text" type="url" name="asb_theme_array[asb_social_url_facebook]" id="asb_social_url_facebook" value="%s">',
-			isset( $this->asb_theme['asb_social_url_facebook'] ) ? esc_url( $this->asb_theme['asb_social_url_facebook'] ) : ''
+			'<input class="regular-text" type="url" name="asb_theme_array[asb_facebook_url]" id="asb_facebook_url" value="%s">',
+			isset( $this->asb_theme['asb_facebook_url'] ) ? esc_url( $this->asb_theme['asb_facebook_url'] ) : ''
 		);
 	}
 
-	public function asb_social_url_instagram_callback() {
+	public function asb_instagram_url_callback() {
 		printf(
-			'<input class="regular-text" type="url" name="asb_theme_array[asb_social_url_instagram]" id="asb_social_url_instagram" value="%s">',
-			isset( $this->asb_theme['asb_social_url_instagram'] ) ? esc_url( $this->asb_theme['asb_social_url_instagram'] ) : ''
+			'<input class="regular-text" type="url" name="asb_theme_array[asb_instagram_url]" id="asb_instagram_url" value="%s">',
+			isset( $this->asb_theme['asb_instagram_url'] ) ? esc_url( $this->asb_theme['asb_instagram_url'] ) : ''
 		);
 	}
 
