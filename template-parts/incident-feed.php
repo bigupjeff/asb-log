@@ -48,7 +48,11 @@ while ( $loop->have_posts() ) :
 	/* WP post data */
 	$incident_id    = get_the_ID();
 	$incident_title = the_title( '', '', false );
-	$incident_url   = sanitize_title( $incident_title );
+	$incident_url   = sanitize_url( get_permalink() );
+
+	/* Read more */
+	$trim      = '50';
+	$read_more = '...<a class="readMore" href="' . $incident_url . '"><i> read more </i><svg class="faIcon doubleArrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Pro 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) --><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34zm192-34l-136-136c-9.4-9.4-24.6-9.4-33.9 0l-22.6 22.6c-9.4 9.4-9.4 24.6 0 33.9l96.4 96.4-96.4 96.4c-9.4 9.4-9.4 24.6 0 33.9l22.6 22.6c9.4 9.4 24.6 9.4 33.9 0l136-136c9.4-9.2 9.4-24.4 0-33.8z"/></svg></a>';
 	?>
 
 	<div class="incident" id="indcident-<?php echo $incident_id; ?>">
@@ -65,37 +69,45 @@ while ( $loop->have_posts() ) :
 			</div>
 		<?php endif ?>
 
-		<?php if ( ! empty( $time_started ) ) : ?>
 			<div class="incident_label">
-				<span>Time started</span>
+				<span>Date/Time</span>
 			</div>
-			<div class="incident_value">
-				<span><?php echo $time_started; ?></span>
-			</div>
-		<?php endif ?>
+			<div class="incident_value dateTime">
 
-		<?php if ( ! empty( $time_stopped ) ) : ?>
-			<div class="incident_label">
-				<span>Time stopped</span>
+				<div class="incident_inline">
+					<span class="incident_inlineLabel">Date</span>
+					<span class="incident_inlineValue"><?php echo $date; ?></span>
+				</div>
+
+				<?php if ( ! empty( $time_started ) ) : ?>
+					<div class="incident_inline">
+						<span class="incident_inlineLabel">Time started</span>
+						<span class="incident_inlineValue"><?php echo $time_started; ?></span>
+					</div>
+				<?php endif ?>
+
+				<?php if ( ! empty( $time_stopped ) ) : ?>
+					<div class="incident_inline">
+						<span class="incident_inlineLabel">Time stopped</span>
+						<span class="incident_inlineValue"><?php echo $time_stopped; ?></span>
+					</div>
+				<?php endif ?>
+
 			</div>
-			<div class="incident_value">
-				<span><?php echo $time_stopped; ?></span>
-			</div>
-		<?php endif ?>
 
 		<div class="incident_label">
 			<span>What happened?</span>
 		</div>
 		<div class="incident_value xScroll">
-			<?php echo $what_happened; ?>
+			<?php echo force_balance_tags( html_entity_decode( wp_trim_words( htmlentities( $what_happened ), $trim, $read_more ) ) ); ?>
 		</div>
 
 		<?php if ( ! empty( $how_did_this_affect_you ) ) : ?>
 			<div class="incident_label">
 				<span>How did this affect you?</span>
 			</div>
-			<div class="incident_value">
-				<?php echo $how_did_this_affect_you; ?>
+			<div class="incident_value xScroll">
+				<?php echo force_balance_tags( html_entity_decode( wp_trim_words( htmlentities( $how_did_this_affect_you ), $trim, $read_more ) ) ); ?>
 			</div>
 		<?php endif ?>
 
@@ -133,7 +145,6 @@ while ( $loop->have_posts() ) :
 						marginheight="0"
 						marginwidth="0"
 						src="https://www.openstreetmap.org/export/embed.html?bbox=<?php echo "{$minLong}%2C{$minLat}%2C{$maxLong}%2C{$maxLat}"; ?>&amp;layer=mapnik&amp;marker=<?php echo "{$location[ 'lat' ]}%2C{$location[ 'lng' ]}"; ?>"
-						style="border: 1px solid black"
 					>
 					</iframe>
 					<small>

@@ -24,6 +24,7 @@
     o Buttons
     o Links
     o Tables
+	o .readMore
     o Wordpress UI
         - .post-edit-link
 # Blocks
@@ -457,7 +458,7 @@ i {
 }
 
 small {
-	font-size: var( --asb_font-s );
+	font-size: var( --asb_font-xs );
 }
 
 
@@ -623,46 +624,17 @@ a {
     text-decoration: none;
 }
 
-/* price table */
-td > a > .readMore {
-    font-size: var(--asb_font-xs);
-}
-
-p > a,
-.readMore {
-    display: inline-block;
-    padding: 0 0.2em;
-    font-weight: 400;
-    line-height: 1.5;
-}
-
 p > a {
     text-decoration: underline;
 }
 
-.readMore {
-    text-decoration: none;
-}
-
-/* read more icon */
-i.fas.fa-angle-double-right {
-    color: var(--asb_theme-yellow2);
-    font-size: var(--asb_font-xs);
-}
-
-p > a:visited,
-.readMore:visited {
+p > a:visited {
     font-weight: 300;
 }
 
-p > a:hover,
-.readMore:hover {
+p > a:hover {
     transform: none;
     background-color: var(--asb_theme-blue1);
-    color: var(--asb_white);
-}
-
-.readMore:hover > i {
     color: var(--asb_white);
 }
 
@@ -735,6 +707,39 @@ table {
 	}
 }
 
+
+/* ----------------------------------------------------------- ### .readMore -*/
+
+
+.readMore {
+	display: inline-block;
+	margin: 0 .5em;
+	border-bottom: solid 1px;
+	text-decoration: none;
+	font-size: var(--asb_font-xs);
+
+	.faIcon {
+		display: inline-block;
+		width: 1em;
+		height: 1em;
+		vertical-align: middle;
+		fill: var( --asb_theme-blue3 );
+	}
+
+	&:hover {
+		transform: none;
+		background-color: var( --asb_theme-blue3 );
+		color: var(--asb_white);
+
+		.faIcon {
+			fill: var( --asb_theme-yellow2 );
+		}
+	}
+
+	&:visited {
+		font-weight: 300;
+	}
+}
 
 
 /* --------------------------------------------------------- ## WordPress UI -*/
@@ -1191,122 +1196,152 @@ table {
 	padding: var( --asb_padding );
     width: 100%;
 	max-width: var( --asb_contentWidth );
-}
+
 	.incidentFeed_title {
 		display: flex;
 		align-items: flex-end;
 		justify-content: center;
 	}
 
-.incident {
-	display: grid;
-	grid-template-columns: auto;
-	margin-bottom: 4em;
-	border-radius: var( --asb_cornerRadius );
-	box-shadow: var( --asb_boxShadow );
-	max-width: 100%;
-	overflow: hidden;
-}
-	.incident > div {
-		padding: var( --asb_padding );
-	}
-	.incident_label,
-	.incident_value {
-		border-bottom: solid 1px #ccc;
-	}
-	.incident > div:nth-last-child( 1 ) {
-		border-bottom: solid 0.5em var( --asb_theme-blue2 );
-	}
-	.incident_label {
-		background: #f3f3f3;
-	}
-	.incident > div:nth-of-type(2n+6) {
-		background: #fff;
-	}
-	.incident > div:nth-of-type(2n+6) {
-		background: #fff;
-	}
-	.incident_header,
-	.incident_editBar {
-		grid-column: 1 / -1;
-		display: flex;
-		justify-content: flex-start;
-		align-items: center;
-		text-align: center;
-		text-transform: uppercase;
-	}
-	.incident_header {
-		background: var( --asb_theme-blue2 );
-		color: var( --asb_white );
-		font: 600 var( --asb_font-m ) var( --asb_font-primary );
-	}
-	.incident_editBar {
-		background: var( --asb_theme-yellow2 );
-	}
-	.incident_editBar:nth-child(3) {
-		padding: 0;
-	}
-	.incident_header:nth-child( 2 ) {
-		font: 600 var( --asb_font-m ) var( --asb_font-primary );
-	}
-	.incident_label {
-		font-weight: 800;
-	}
-		.incident pre {
+	.incident {
+		display: grid;
+		grid-template-columns: auto;
+		margin-bottom: 4em;
+		border-radius: var( --asb_cornerRadius );
+		box-shadow: var( --asb_boxShadow );
+		max-width: 100%;
+		overflow: hidden;
+	
+		&>div {
+			padding: var( --asb_padding );
+			border-bottom: solid 1px #ccc;
+	
+			&:nth-last-child( 1 ) {
+				border-bottom: solid 0.5em var( --asb_theme-blue2 );
+			}
+		}
+
+		pre {
 			margin: 0;
 			white-space: pre-wrap;
 			font-family: var( --asb_font-secondary );
 		}
 
-
-	.incident_value.location {
-		display: flex;
-		flex-flow: row wrap;
-		gap: 0.5em;
-
-		.incident_table {
-			flex: 1 1 70%;
-
-			tr:last-child > td {
-				border-bottom: none;
-			}
-
-			td:first-child {
-				font-weight: 600;
-			}
-
-			@media ( max-width: 320px ) {
-				tr {
-					display: flex;
-					flex-flow: column;
-				}
-			}
-		}
-
-		.incident_map {
-			flex: 1 1 200px;
-		}
-	}
-
-		.incident_image img {
+		img {
 			object-fit: contain;
 			max-width: 100%;
 			max-height: 100px;
 		}
 
-@media (min-width: 33em) {
-	.incident {
-		grid-template-columns: calc( 2.5em + 10vw ) auto;
-	}
-	.incident_label {
-		background: unset;
-	}
-	.incident > div:nth-of-type(4n+5),
-	.incident > div:nth-of-type(4n+6) {
-		background: #f9f9f9;
-	}
-	.incident > div:nth-last-child( 2 ) {
-		border-bottom: solid 0.5em var( --asb_theme-blue2 );
+		.incident_header,
+		.incident_editBar {
+			grid-column: 1 / -1;
+			display: flex;
+			justify-content: flex-start;
+			align-items: center;
+			text-align: center;
+			text-transform: uppercase;
+		}
+		.incident_header {
+			background: var( --asb_theme-blue2 );
+			color: var( --asb_white );
+			font: 600 var( --asb_font-m ) var( --asb_font-primary );
+	
+			&:nth-child( 2 ) {
+				font: 600 var( --asb_font-m ) var( --asb_font-primary );
+			}
+		}
+		.incident_editBar {
+			background: var( --asb_theme-yellow2 );
+	
+			&:nth-child(3) {
+				padding: 0;
+			}
+		}
+
+		.incident_label {
+			background: #f0f0f0;
+			font-weight: 800;
+		}
+
+		.incident_value {
+		
+			&.dateTime {
+				display: flex;
+				flex-flow: row wrap;
+				padding: 0;
+
+				.incident_inline {
+					display: flex;
+					flex-flow: row nowrap;
+					flex-grow: 1;
+
+					span {
+						padding: var(--asb_padding);
+						border-bottom: solid 1px #eee;
+
+						&:first-child {
+							width: 9em;
+							background: #f6f6f6;
+							font-weight: 600;
+						}
+
+						&:last-child {
+							flex-grow: 1;
+						}
+					}
+				}
+			}
+
+			&.location {
+				display: flex;
+				flex-flow: row wrap;
+				padding: 0;
+		
+				.incident_table {
+					flex: 1 1 70%;
+		
+					tr {
+						background: unset;
+					}
+
+					tr:last-child > td { border-bottom: none; }
+
+					td {
+						border-bottom: solid 1px #eee;
+						padding: var(--asb_padding);
+
+						&:first-child {
+							background: #f6f6f6;
+							font-weight: 600;
+						}
+					}
+		
+					@media ( max-width: 320px ) {
+						tr {
+							display: flex;
+							flex-flow: column;
+						}
+					}
+				}
+			}
+	
+			.incident_map {
+				flex: 1 1 200px;
+
+				iframe {
+					border: solid 1px #ccc;
+				}
+			}
+		}
+
+		@media (min-width: 512px) {
+			grid-template-columns: calc( 2.5em + 10vw ) auto;
+		
+			&> div:nth-last-child( 2 ) {
+				border-bottom: solid 0.5em var( --asb_theme-blue2 );
+			}
+		}
 	}
 }
 
